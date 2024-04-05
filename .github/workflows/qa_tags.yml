@@ -119,7 +119,11 @@ jobs:
   build_no_release:
     runs-on: ubuntu-latest
     if: ${{ !contains(github.event.head_commit.message, 'MINOR_RELEASE') && !contains(github.event.head_commit.message, 'MAJOR_RELEASE') }}
-    
+    strategy:
+      matrix:
+        repository:
+          - Test
+          - TestRepo2    
 
     steps:
    
@@ -128,7 +132,7 @@ jobs:
         with:
           fetch-depth: '0'
           token: ${{ secrets.BOT_TOKEN }}
-
+          repository: ${{ matrix.repository }}
       - name: Generate Git Tag
         id: generate_tag
         run: |
